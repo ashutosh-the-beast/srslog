@@ -53,6 +53,7 @@ func (w *Writer) connect() (serverConn, error) {
 
 	var hostname string
 	var err error
+	fmt.Println("Line 56 in Connect")
 	dialer := w.getDialer()
 	conn, hostname, err = dialer.Call()
 	if err == nil {
