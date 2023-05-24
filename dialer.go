@@ -85,7 +85,8 @@ func (w *Writer) basicDialer() (serverConn, string, error) {
 	var sc serverConn
 	hostname := w.hostname
 	if err == nil {
-		sc = &netConn{conn: c}
+		sc = &netConn{conn: c,
+			local: w.network == "unixgram" || w.network == "unix"}
 		if hostname == "" {
 			hostname = c.LocalAddr().String()
 		}
