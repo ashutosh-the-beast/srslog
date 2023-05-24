@@ -3,7 +3,6 @@ package srslog
 import (
 	"crypto/tls"
 	"fmt"
-	"strings"
 	"sync"
 )
 
@@ -66,143 +65,143 @@ func (w *Writer) connect() (serverConn, error) {
 	}
 }
 
-// SetFormatter changes the formatter function for subsequent messages.
-func (w *Writer) SetFormatter(f Formatter) {
-	w.formatter = f
-}
+// // SetFormatter changes the formatter function for subsequent messages.
+// func (w *Writer) SetFormatter(f Formatter) {
+// 	w.formatter = f
+// }
 
-// SetFramer changes the framer function for subsequent messages.
-func (w *Writer) SetFramer(f Framer) {
-	w.framer = f
-}
+// // SetFramer changes the framer function for subsequent messages.
+// func (w *Writer) SetFramer(f Framer) {
+// 	w.framer = f
+// }
 
-// SetHostname changes the hostname for syslog messages if needed.
-func (w *Writer) SetHostname(hostname string) {
-	w.hostname = hostname
-}
+// // SetHostname changes the hostname for syslog messages if needed.
+// func (w *Writer) SetHostname(hostname string) {
+// 	w.hostname = hostname
+// }
 
-// Write sends a log message to the syslog daemon using the default priority
-// passed into `srslog.New` or the `srslog.Dial*` functions.
-func (w *Writer) Write(b []byte) (int, error) {
-	return w.writeAndRetry(w.priority, string(b))
-}
+// // Write sends a log message to the syslog daemon using the default priority
+// // passed into `srslog.New` or the `srslog.Dial*` functions.
+// func (w *Writer) Write(b []byte) (int, error) {
+// 	return w.writeAndRetry(w.priority, string(b))
+// }
 
-// WriteWithPriority sends a log message with a custom priority.
-func (w *Writer) WriteWithPriority(p Priority, b []byte) (int, error) {
-	return w.writeAndRetryWithPriority(p, string(b))
-}
+// // WriteWithPriority sends a log message with a custom priority.
+// func (w *Writer) WriteWithPriority(p Priority, b []byte) (int, error) {
+// 	return w.writeAndRetryWithPriority(p, string(b))
+// }
 
-// Close closes a connection to the syslog daemon.
-func (w *Writer) Close() error {
-	conn := w.getConn()
-	if conn != nil {
-		err := conn.close()
-		w.setConn(nil)
-		return err
-	}
-	return nil
-}
+// // Close closes a connection to the syslog daemon.
+// func (w *Writer) Close() error {
+// 	conn := w.getConn()
+// 	if conn != nil {
+// 		err := conn.close()
+// 		w.setConn(nil)
+// 		return err
+// 	}
+// 	return nil
+// }
 
-// Emerg logs a message with severity LOG_EMERG; this overrides the default
-// priority passed to `srslog.New` and the `srslog.Dial*` functions.
-func (w *Writer) Emerg(m string) (err error) {
-	_, err = w.writeAndRetry(LOG_EMERG, m)
-	return err
-}
+// // Emerg logs a message with severity LOG_EMERG; this overrides the default
+// // priority passed to `srslog.New` and the `srslog.Dial*` functions.
+// func (w *Writer) Emerg(m string) (err error) {
+// 	_, err = w.writeAndRetry(LOG_EMERG, m)
+// 	return err
+// }
 
-// Alert logs a message with severity LOG_ALERT; this overrides the default
-// priority passed to `srslog.New` and the `srslog.Dial*` functions.
-func (w *Writer) Alert(m string) (err error) {
-	_, err = w.writeAndRetry(LOG_ALERT, m)
-	return err
-}
+// // Alert logs a message with severity LOG_ALERT; this overrides the default
+// // priority passed to `srslog.New` and the `srslog.Dial*` functions.
+// func (w *Writer) Alert(m string) (err error) {
+// 	_, err = w.writeAndRetry(LOG_ALERT, m)
+// 	return err
+// }
 
-// Crit logs a message with severity LOG_CRIT; this overrides the default
-// priority passed to `srslog.New` and the `srslog.Dial*` functions.
-func (w *Writer) Crit(m string) (err error) {
-	_, err = w.writeAndRetry(LOG_CRIT, m)
-	return err
-}
+// // Crit logs a message with severity LOG_CRIT; this overrides the default
+// // priority passed to `srslog.New` and the `srslog.Dial*` functions.
+// func (w *Writer) Crit(m string) (err error) {
+// 	_, err = w.writeAndRetry(LOG_CRIT, m)
+// 	return err
+// }
 
-// Err logs a message with severity LOG_ERR; this overrides the default
-// priority passed to `srslog.New` and the `srslog.Dial*` functions.
-func (w *Writer) Err(m string) (err error) {
-	_, err = w.writeAndRetry(LOG_ERR, m)
-	return err
-}
+// // Err logs a message with severity LOG_ERR; this overrides the default
+// // priority passed to `srslog.New` and the `srslog.Dial*` functions.
+// func (w *Writer) Err(m string) (err error) {
+// 	_, err = w.writeAndRetry(LOG_ERR, m)
+// 	return err
+// }
 
-// Warning logs a message with severity LOG_WARNING; this overrides the default
-// priority passed to `srslog.New` and the `srslog.Dial*` functions.
-func (w *Writer) Warning(m string) (err error) {
-	_, err = w.writeAndRetry(LOG_WARNING, m)
-	return err
-}
+// // Warning logs a message with severity LOG_WARNING; this overrides the default
+// // priority passed to `srslog.New` and the `srslog.Dial*` functions.
+// func (w *Writer) Warning(m string) (err error) {
+// 	_, err = w.writeAndRetry(LOG_WARNING, m)
+// 	return err
+// }
 
-// Notice logs a message with severity LOG_NOTICE; this overrides the default
-// priority passed to `srslog.New` and the `srslog.Dial*` functions.
-func (w *Writer) Notice(m string) (err error) {
-	_, err = w.writeAndRetry(LOG_NOTICE, m)
-	return err
-}
+// // Notice logs a message with severity LOG_NOTICE; this overrides the default
+// // priority passed to `srslog.New` and the `srslog.Dial*` functions.
+// func (w *Writer) Notice(m string) (err error) {
+// 	_, err = w.writeAndRetry(LOG_NOTICE, m)
+// 	return err
+// }
 
-// Info logs a message with severity LOG_INFO; this overrides the default
-// priority passed to `srslog.New` and the `srslog.Dial*` functions.
-func (w *Writer) Info(m string) (err error) {
-	_, err = w.writeAndRetry(LOG_INFO, m)
-	return err
-}
+// // Info logs a message with severity LOG_INFO; this overrides the default
+// // priority passed to `srslog.New` and the `srslog.Dial*` functions.
+// func (w *Writer) Info(m string) (err error) {
+// 	_, err = w.writeAndRetry(LOG_INFO, m)
+// 	return err
+// }
 
-// Debug logs a message with severity LOG_DEBUG; this overrides the default
-// priority passed to `srslog.New` and the `srslog.Dial*` functions.
-func (w *Writer) Debug(m string) (err error) {
-	_, err = w.writeAndRetry(LOG_DEBUG, m)
-	return err
-}
+// // Debug logs a message with severity LOG_DEBUG; this overrides the default
+// // priority passed to `srslog.New` and the `srslog.Dial*` functions.
+// func (w *Writer) Debug(m string) (err error) {
+// 	_, err = w.writeAndRetry(LOG_DEBUG, m)
+// 	return err
+// }
 
-// writeAndRetry takes a severity and the string to write. Any facility passed to
-// it as part of the severity Priority will be ignored.
-func (w *Writer) writeAndRetry(severity Priority, s string) (int, error) {
-	pr := (w.priority & facilityMask) | (severity & severityMask)
+// // writeAndRetry takes a severity and the string to write. Any facility passed to
+// // it as part of the severity Priority will be ignored.
+// func (w *Writer) writeAndRetry(severity Priority, s string) (int, error) {
+// 	pr := (w.priority & facilityMask) | (severity & severityMask)
 
-	return w.writeAndRetryWithPriority(pr, s)
-}
+// 	return w.writeAndRetryWithPriority(pr, s)
+// }
 
-// writeAndRetryWithPriority differs from writeAndRetry in that it allows setting
-// of both the facility and the severity.
-func (w *Writer) writeAndRetryWithPriority(p Priority, s string) (int, error) {
-	fmt.Println("line 173 Writer :>")
-	conn := w.getConn()
-	if conn != nil {
-		if n, err := w.write(conn, p, s); err == nil {
-			return n, err
-		}
-	}
+// // writeAndRetryWithPriority differs from writeAndRetry in that it allows setting
+// // of both the facility and the severity.
+// func (w *Writer) writeAndRetryWithPriority(p Priority, s string) (int, error) {
+// 	fmt.Println("line 173 Writer :>")
+// 	conn := w.getConn()
+// 	if conn != nil {
+// 		if n, err := w.write(conn, p, s); err == nil {
+// 			return n, err
+// 		}
+// 	}
 
-	var err error
-	if conn, err = w.connect(); err != nil {
-		return 0, err
-	}
-	return w.write(conn, p, s)
-}
+// 	var err error
+// 	if conn, err = w.connect(); err != nil {
+// 		return 0, err
+// 	}
+// 	return w.write(conn, p, s)
+// }
 
-// write generates and writes a syslog formatted string. It formats the
-// message based on the current Formatter and Framer.
-func (w *Writer) write(conn serverConn, p Priority, msg string) (int, error) {
-	fmt.Println("line 191 writer ")
+// // write generates and writes a syslog formatted string. It formats the
+// // message based on the current Formatter and Framer.
+// func (w *Writer) write(conn serverConn, p Priority, msg string) (int, error) {
+// 	fmt.Println("line 191 writer ")
 
-	fmt.Println("msg line 193:>", msg)
-	// ensure it ends in a \n
-	if !strings.HasSuffix(msg, "\n") {
-		msg += "\n"
-	}
-	fmt.Println("Line 192 :>", w.framer)
-	fmt.Println("Line 193 :>", w.formatter)
-	err := conn.writeString(w.framer, w.formatter, p, w.hostname, w.tag, msg)
-	if err != nil {
-		return 0, err
-	}
-	// Note: return the length of the input, not the number of
-	// bytes printed by Fprintf, because this must behave like
-	// an io.Writer.
-	return len(msg), nil
-}
+// 	fmt.Println("msg line 193:>", msg)
+// 	// ensure it ends in a \n
+// 	if !strings.HasSuffix(msg, "\n") {
+// 		msg += "\n"
+// 	}
+// 	fmt.Println("Line 192 :>", w.framer)
+// 	fmt.Println("Line 193 :>", w.formatter)
+// 	err := conn.writeString(w.framer, w.formatter, p, w.hostname, w.tag, msg)
+// 	if err != nil {
+// 		return 0, err
+// 	}
+// 	// Note: return the length of the input, not the number of
+// 	// bytes printed by Fprintf, because this must behave like
+// 	// an io.Writer.
+// 	return len(msg), nil
+// }
