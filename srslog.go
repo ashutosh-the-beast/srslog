@@ -6,7 +6,6 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net"
 	"os"
 )
@@ -119,10 +118,10 @@ func dialAllParameters(network, raddr string, priority Priority, tag string, tls
 // the system log service with the specified priority. The logFlag
 // argument is the flag set passed through to log.New to create
 // the Logger.
-func NewLogger(p Priority, logFlag int) (*log.Logger, error) {
-	s, err := New(p, "")
-	if err != nil {
-		return nil, err
-	}
-	return log.New(s, "", logFlag), nil
-}
+// func NewLogger(p Priority, logFlag int) (*log.Logger, error) {
+// 	s, err := New(p, "")
+// 	if err != nil {
+// 		return nil, err
+// 	}
+// 	return log.New(s, "", logFlag), nil
+// }
