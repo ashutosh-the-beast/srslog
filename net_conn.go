@@ -8,7 +8,8 @@ import (
 // netConn has an internal net.Conn and adheres to the serverConn interface,
 // allowing us to send syslog messages over the network.
 type netConn struct {
-	conn net.Conn
+	conn  net.Conn
+	local bool
 }
 
 // writeString formats syslog messages using time.RFC3339 and includes the

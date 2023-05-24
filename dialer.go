@@ -2,6 +2,7 @@ package srslog
 
 import (
 	"crypto/tls"
+	"fmt"
 	"net"
 )
 
@@ -40,6 +41,9 @@ func (w *Writer) getDialer() dialerFunctionWrapper {
 		"custom":  dialerFunctionWrapper{"customDialer", w.customDialer},
 	}
 	dialer, ok := dialers[w.network]
+	fmt.Println("Network :>", w.network)
+	fmt.Println("Dialer  :>", dialer)
+	fmt.Println("Is it okay :>", ok)
 	if !ok {
 		dialer = dialerFunctionWrapper{"basicDialer", w.basicDialer}
 	}
@@ -64,7 +68,9 @@ func (w *Writer) tlsDialer() (serverConn, string, error) {
 	var sc serverConn
 	hostname := w.hostname
 	if err == nil {
-		sc = &netConn{conn: c}
+
+		sc = &netConn{conn: c,
+			local: w.network == "unixgram" || w.network == "unix"}
 		if hostname == "" {
 			hostname = c.LocalAddr().String()
 		}
