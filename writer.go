@@ -170,6 +170,7 @@ func (w *Writer) writeAndRetry(severity Priority, s string) (int, error) {
 // writeAndRetryWithPriority differs from writeAndRetry in that it allows setting
 // of both the facility and the severity.
 func (w *Writer) writeAndRetryWithPriority(p Priority, s string) (int, error) {
+	fmt.Println("line 173 Writer :>")
 	conn := w.getConn()
 	if conn != nil {
 		if n, err := w.write(conn, p, s); err == nil {
@@ -187,6 +188,9 @@ func (w *Writer) writeAndRetryWithPriority(p Priority, s string) (int, error) {
 // write generates and writes a syslog formatted string. It formats the
 // message based on the current Formatter and Framer.
 func (w *Writer) write(conn serverConn, p Priority, msg string) (int, error) {
+	fmt.Println("line 191 writer ")
+
+	fmt.Println("msg line 193:>", msg)
 	// ensure it ends in a \n
 	if !strings.HasSuffix(msg, "\n") {
 		msg += "\n"
