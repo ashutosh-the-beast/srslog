@@ -4,6 +4,7 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net"
@@ -109,6 +110,8 @@ func dialAllParameters(network, raddr string, priority Priority, tag string, tls
 	if err != nil {
 		return nil, err
 	}
+	fmt.Println("LIne 113 srslog.go")
+	fmt.Println("THe writer is 114:>", w)
 	return w, err
 }
 
