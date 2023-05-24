@@ -2,6 +2,7 @@ package srslog
 
 import (
 	"crypto/tls"
+	"fmt"
 	"strings"
 	"sync"
 )
@@ -189,7 +190,8 @@ func (w *Writer) write(conn serverConn, p Priority, msg string) (int, error) {
 	if !strings.HasSuffix(msg, "\n") {
 		msg += "\n"
 	}
-
+	fmt.Println("Line 192 :>", w.framer)
+	fmt.Println("Line 193 :>", w.formatter)
 	err := conn.writeString(w.framer, w.formatter, p, w.hostname, w.tag, msg)
 	if err != nil {
 		return 0, err
